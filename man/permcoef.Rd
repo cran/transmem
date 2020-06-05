@@ -4,17 +4,13 @@
 \alias{permcoef}
 \title{Calculates permeability coefficients}
 \usage{
-permcoef(trans, conc0 = NULL, vol, area, units = c("cm^3", "cm^2", "h"))
+permcoef(trans, vol, area, units = c("cm^3", "cm^2", "h"), conc0 = NULL,
+  plot = FALSE)
 }
 \arguments{
 \item{trans}{Data frame with the complete transport information of
 interest species. Must be generated using
 \code{\link{conc2frac}}.}
-
-\item{conc0}{Initial concentration of the species in the feed solution. The
-value may be extracted from transport information if the data
-frame provided in \code{trans} is not normalized. See
-\code{\link{conc2frac}} for details.}
 
 \item{vol}{Volume of the feed solution.}
 
@@ -23,9 +19,17 @@ frame provided in \code{trans} is not normalized. See
 \item{units}{Units in which volume, area and time are provided. Volume
 and area are function's parameters while the time is
 extracted from the \code{trans} data frame.}
+
+\item{conc0}{Initial concentration of the species in the feed solution. The
+value may be extracted from transport information if the data
+frame provided in \code{trans} is not normalized. See
+\code{\link{conc2frac}} for details.}
+
+\item{plot}{logical default to \code{TRUE}. Should the plot be made?}
 }
 \value{
-Premeability coefficient for species in meters per second.
+A numeric vector with the permeability coefficient and it's
+standard uncertainty from the regression. Units are meters per second.
 }
 \description{
 Permeability coefficients across a membrane as derived from integrated

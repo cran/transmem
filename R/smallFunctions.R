@@ -103,12 +103,6 @@ plotCCurve <- function(curve, model = NULL, badpoint = NULL) {
   }
 }
 
-
-
-
-
-
-
 # Function not exported to the user as it is still under development.
 # It is still possibly to use it by transmem:::extrMolRat()
 extrMolRat <- function(mass = NULL, ratio = NULL, ex1 = NULL, ex2 = NULL,

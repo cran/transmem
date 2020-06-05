@@ -1,13 +1,10 @@
 Package: transmem
-Version: 0.1.0
+Version: 0.1.1
 Type: Package
-Date: 2020-4-17
+Date: 2020-6-05
 Title: Treatment of Membrane-Transport Data
-Authors@R: c(
-    person("Cristhian", "Paredes", email = "craparedesca@unal.edu.co",
-    role = c("aut", "cre")),
-    person("Eduardo", "Rodriguez-de-San-Miguel", email = "erdsm@unam.mx", 
-    role = "aut"))
+Author: Cristhian Paredes [aut, cre],
+    Eduardo Rodríguez de San Miguel [aut]
 Maintainer: Cristhian Paredes <craparedesca@unal.edu.co>
 Description: Treatment and visualization of membrane (selective) transport 
     data. Transport profiles involving up to three species are produced as
@@ -19,7 +16,7 @@ Description: Treatment and visualization of membrane (selective) transport
     experimental setups (e.g. membrane physical aging) can be easily studied
     through the package's graphical representations. 
 License: GPL (>= 2)
-URL: https://github.com/Crparedes/transmem
+URL: https://CRAN.R-project.org/package=transmem
 BugReports: https://github.com/Crparedes/transmem/issues
 Encoding: UTF-8
 LazyData: true
@@ -28,8 +25,6 @@ Depends: R (>= 3.5.0)
 Imports: cmna, ggformula, ggplot2, plot3D
 Suggests: knitr, rmarkdown
 NeedsCompilation: no
-Packaged: 2020-04-17 18:19:05 UTC; cris
-Author: Cristhian Paredes [aut, cre],
-  Eduardo Rodriguez-de-San-Miguel [aut]
+Packaged: 2020-06-05 05:24:26 UTC; cris
 Repository: CRAN
-Date/Publication: 2020-04-23 13:40:02 UTC
+Date/Publication: 2020-06-05 10:10:02 UTC

@@ -24,47 +24,40 @@
 #' @param units  Units in which volume, area and time are provided. Volume
 #'               and area are function's parameters while the time is
 #'               extracted from the \code{trans} data frame.
+#' @param plot   logical default to \code{TRUE}. Should the plot be made?
 #'
-#' @return Premeability coefficient for species in meters per second.
+#' @return A numeric vector with the permeability coefficient and it's
+#' standard uncertainty from the regression. Units are meters per second.
 #' @example
 #'   data(reusecycles)
-#'   permcoef(trans = reusecycles[[1]], conc_0 = 2, vol = 85,
-#'            area = pi * 1.25^2, units = c('cm^3', 'cm^2', 'h'))
-#'   # Warning if normalized data is used and no initial concentration is given
-#'   \dontrun{
-#'     permcoef(trans = reusecycles[[1]], vol = 85,
-#'              area = pi * 1.25^2, units = c('cm^3', 'cm^2', 'h'))
-#'   }
+#'   (permcoef(trans = reusecycles[[1]], vol = 85,
+#'            area = pi * 1.25^2, units = c('cm^3', 'cm^2', 'h')))
 #' @author Cristhian Paredes, \email{craparedesca@@unal.edu.co}
 #' @author Eduardo Rodriguez de San Miguel, \email{erdsmg@@unam.mx}
 #' @export
 
 
-permcoef <- function(trans, conc0 = NULL, vol, area,
-                     units = c('cm^3', 'cm^2', 'h')) {
-  if (missing(conc0)) {
-    conc0 <- trans$Fraction[1]
-    if (conc0 == 1) {
-      warning('trans data frame seems to be normalized and no initial
-    concentration value was provided. This may yield an incorrect permeability
-    coefficient. Please ensure data frame is not normalized (see ?conc2frac) or
-    provide initial species concentration at conc0 parameter')
-    }
-  }
+permcoef <- function(trans, vol, area, units = c('cm^3', 'cm^2', 'h'),
+                     conc0 = NULL, plot = FALSE) {
+  if (missing(conc0)) conc0 <- trans$Fraction[1]
   conc <- trans[which(trans$Phase == "Feed"), ]
   y <- log(conc[, 3] / conc[1, 3])
   t <- trans[which(trans$Phase == "Feed"), 1]
   if (units[3] == 'h') t <- t * 3600
   if (units[1] == 'cm^3') vol <- vol / 1000000
   if (units[2] == 'cm^2') area <- area / 10000
-  plot(y ~ t)
   x <- (area / vol) * t
   model <- lm(y ~ 0 + x)
-  abline(lm(y ~ 0 + t), col = 4)
+
+  if (plot) {
+    plot(y ~ t)
+    abline(lm(y ~ 0 + t), col = 4)
+  }
+
   Xm <- - 1 * summary(model)$coefficients[1]
   sd <- summary(model)$coefficients[2]
   sd <- signif(sd, 2)
   Xm <- signif(Xm, 2 + ceiling(log10(Xm/sd)))
-  cat("Permeability coefficient: ", Xm, "+/-", sd, ' m/s \n')
-  return(Xm)
+  message("Permeability coefficient: ", Xm, "+/-", sd, ' m/s \n')
+  return(c(Xm, sd))
 }

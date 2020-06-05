@@ -12,9 +12,10 @@
   \item{Conc.S}{sodium concentration in the standards, in mg/kg}
 }}
 \source{
-C. Paredes, E. Rodriguez de San Miguel, Polymer inclusion membrane for
-  the recovery and concentration of lithium from seawater. Master thesis,
-  Universidad Nacional Autónoma de México, México City, México, 2020.
+Paredes, C. and Rodríguez de San Miguel, E., Selective lithium extraction
+  and concentration from diluted alkaline aqueous media by a polymer
+  inclusion membrane and application to seawater, Desalination, Volume 487,
+  2020, 114500, https://doi.org/10.1016/j.desal.2020.114500.
 }
 \usage{
 planelithium

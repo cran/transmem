@@ -34,16 +34,14 @@
 #' @examples
 #'   data(seawaterLiNaK)
 #'   # Transport data frames and transport NLS regresions must be in lists
-#'   lithium <- list(seawaterLiNaK$Lithium.1, seawaterLiNaK$Lithium.2)
-#'   sodium <- list(seawaterLiNaK$Sodium.1, seawaterLiNaK$Sodium.2)
+#'   lithium   <- list(seawaterLiNaK$Lithium.1, seawaterLiNaK$Lithium.2)
+#'   sodium    <- list(seawaterLiNaK$Sodium.1, seawaterLiNaK$Sodium.2)
 #'   potassium <- list(seawaterLiNaK$Potassium.1, seawaterLiNaK$Potassium.2)
-#'   trend <- list(transTrend(trans = seawaterLiNaK$Lithium.1),
-#'                 transTrend(trans = seawaterLiNaK$Lithium.1))
+#'   trend     <- list(transTrend(trans = seawaterLiNaK$Lithium.1),
+#'                     transTrend(trans = seawaterLiNaK$Lithium.2))
 #'
 #'   transPlotWR(trans = lithium, trend = trend, secondary = sodium,
-#'               tertiary = potassium, bw = TRUE, srs = 0.75)
-#'   transPlotWR(trans = lithium, trend = trend, secondary = sodium,
-#'               tertiary = potassium, bw = TRUE, srs = 0.5)
+#'               tertiary = potassium, bw = TRUE)
 #' @importFrom grDevices hcl
 #' @importFrom ggformula geom_spline
 #' @import ggplot2 stats graphics
@@ -56,9 +54,10 @@ transPlotWR <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
                         ylab = expression(Phi), xlim = NULL, ylim = NULL,
                         xbreaks = NULL, ybreaks = NULL, lin.secon = FALSE,
                         sec.trend = 'spline', span = 0.75, explicit = FALSE,
-                        size = 3, plot = TRUE, bw = FALSE, srs = 0.8){
+                        size = 3, plot = TRUE, bw = FALSE, srs = NULL){
   #Missing global variables issue correction
   Time <- Fraction <- Phase <- SD <- mtrend <- NULL
+  if (!missing(srs)) warning('Argument srs is deprecated')
 
   if (!missing(lin.secon)) {
     warning("lin.secon is deprecated. Use sec.trend = 'linear' instead.")
@@ -163,8 +162,8 @@ transPlotWR <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
 
     if (bw) {
       p <- p + geom_point(data = mtrans[which(mtrans$Phase == 'Strip'), ],
-                          col = 'white', size = size*srs,
-                          aes(x = Time, y = Fraction), shape = 15)
+                          col = 'black', fill = 'white', size = size,
+                          aes(x = Time, y = Fraction), shape = 22)
     }
 
     if (!missing(secondary)) {
@@ -205,9 +204,8 @@ transPlotWR <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
                             aes(x = Time, y = Fraction), shape = 17,
                             color = 'black')
         p <- p + geom_point(data = msecon[which(msecon$Phase == 'Strip.'), ],
-                            size = size * srs,
-                            aes(x = Time, y = Fraction), shape = 17,
-                            color = 'white')
+                            size = size, color = 'black', fill = 'white',
+                            aes(x = Time, y = Fraction), shape = 24)
       } else {
         p <- p + geom_point(data = msecon, size = 3,
                             aes(x = Time, y = Fraction,
@@ -252,9 +250,8 @@ transPlotWR <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
                             aes(x = Time, y = Fraction), shape = 16,
                             color = 'black')
         p <- p + geom_point(data = mterna[which(mterna$Phase == 'Strip.'), ],
-                            size = size * srs,
-                            aes(x = Time, y = Fraction), shape = 16,
-                            color = 'white')
+                            size = size, color = 'black', fill = 'white',
+                            aes(x = Time, y = Fraction), shape = 21)
       } else {
         p <- p + geom_point(data = mterna, size = 3,
                             aes(x = Time, y = Fraction,

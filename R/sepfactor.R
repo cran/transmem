@@ -72,9 +72,9 @@ sepfactor <- function (main, secon, order = 2, mode = 'batch', plot = TRUE) {
   if (any(B_s < (B_f[1] - B_f))) B_s <- B_f[1] - B_f
 
   if (length(time_A) > length(time_B)) {
-    message('Due to missing secondary species values at some times,
-  this information was interpolated and used to produce the
-  separation factor results.')
+    message('Due to missing secondary species values at some times, ',
+            'this information was interpolated and used to produce the ',
+            'separation factor results.')
     B_s <- fixSecondary(conc = B_s, time = time_B, compTime = time_A,
                         order = order)
     B_f <- fixSecondary(conc = B_f, time = time_B, compTime = time_A,

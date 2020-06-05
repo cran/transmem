@@ -47,9 +47,7 @@
 #' @param bw        Logical, if \code{FALSE}, the default, a color version of
 #'                  the plot is given. If a black and white version is
 #'                  required, it must be set to \code{TRUE}.
-#' @param srs       Relative size of the void space in shapes of the plot
-#'                  when \code{bw = TRUE}. Needs to be adjusted according to
-#'                  the graphical device resolution and desired appearance.
+#' @param srs       Deprecated.
 #' @param plot      Logical. If \code{TRUE}, the default, the plot is printed
 #'                  in the current graphical device.
 #'
@@ -64,10 +62,7 @@
 #'             tertiary = seawaterLiNaK$Potassium.1)
 #'   transPlot(trans = seawaterLiNaK$Lithium.1, trend = trend,
 #'             secondary = seawaterLiNaK$Sodium.1,
-#'             tertiary = seawaterLiNaK$Potassium.1, bw = TRUE, srs = 0.75)
-#'   transPlot(trans = seawaterLiNaK$Lithium.1, trend = trend,
-#'             secondary = seawaterLiNaK$Sodium.1,
-#'             tertiary = seawaterLiNaK$Potassium.1, bw = TRUE, srs = 0.5)
+#'             tertiary = seawaterLiNaK$Potassium.1, bw = TRUE)
 #' @author Cristhian Paredes, \email{craparedesca@@unal.edu.co}
 #' @author Eduardo Rodriguez de San Miguel, \email{erdsmg@@unam.mx}
 #' @export
@@ -77,10 +72,11 @@ transPlot <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
                       legend = FALSE, xlab = 'Time (h)',
                       ylab = expression(Phi), xlim = NULL, ylim = NULL,
                       xbreaks = NULL, ybreaks = NULL, size = 2.8, bw = FALSE,
-                      srs = 0.8, plot = TRUE){
+                      srs = NULL, plot = TRUE){
   #Missing global variables issue correction
   Time <- Fraction <- Phase <- SD <- NULL
 
+  if (!missing(srs)) warning('Argument srs is deprecated')
   p <- ggplot(data = trans, aes(x = Time, y = Fraction, group = Phase)) +
     theme_bw() +  geom_point(size = size, shape = 15, aes(color = Phase)) +
     labs(y = ylab, x = xlab) +
@@ -109,8 +105,8 @@ transPlot <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
 
   if (bw) {
     p <- p + geom_point(data = trans[which(trans$Phase == 'Strip'), ],
-                        col = 'white', size = size*srs,
-                        aes(x = Time, y = Fraction), shape = 15)
+                        col = 'black', fill = 'white', size = size,
+                        aes(x = Time, y = Fraction), shape = 22)
   }
 
   if (!missing(secondary)) {
@@ -141,8 +137,9 @@ transPlot <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
       p <- p + geom_point(data = secondary, size = size, shape = 17,
                           aes(x = Time, y = Fraction), color = 'black')
       sec.stript <- secondary[which(secondary$Phase == 'Strip.'), ]
-      p <- p + geom_point(data = sec.stript, size = size * srs, shape = 17,
-                          aes(x = Time, y = Fraction), color = 'white')
+      p <- p + geom_point(data = sec.stript, size = size, shape = 24,
+                          aes(x = Time, y = Fraction),
+                          color = 'black', fill = 'white')
     } else {
       p <- p + geom_point(data = secondary, size = 3, shape = 17,
                           aes(x = Time, y = Fraction, group = Phase,
@@ -178,8 +175,9 @@ transPlot <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
       p <- p + geom_point(data = tertiary, size = size, shape = 16,
                           aes(x = Time, y = Fraction), color = 'black')
       Tert.strip <- tertiary[which(tertiary$Phase == 'Strip.'), ]
-      p <- p + geom_point(data = Tert.strip, size = size * srs, shape = 16,
-                          aes(x = Time, y = Fraction), color = 'white')
+      p <- p + geom_point(data = Tert.strip, size = size, shape = 21,
+                          aes(x = Time, y = Fraction),
+                          color = 'black', fill = 'white')
     } else {
       p <- p + geom_point(data = tertiary, size = 3,
                           aes(x = Time, y = Fraction,
@@ -190,28 +188,18 @@ transPlot <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
   if (!missing(xlim) && !missing(xbreaks)) {
     p <- p  + scale_x_continuous(breaks = xbreaks, limits = xlim)
   } else {
-    if (!missing(xlim)) {
-      p <- p  + scale_x_continuous(limits = xlim)
-    }
-    if (!missing(xbreaks)) {
-      p <- p  + scale_x_continuous(breaks = xbreaks)
-    }
+    if (!missing(xlim)) p <- p  + scale_x_continuous(limits = xlim)
+    if (!missing(xbreaks)) p <- p  + scale_x_continuous(breaks = xbreaks)
   }
 
   if (!missing(ylim) && !missing(ybreaks)) {
     p <- p  + scale_y_continuous(breaks = ybreaks, limits = ylim)
   } else {
-    if (!missing(ylim)) {
-      p <- p  + scale_y_continuous(limits = ylim)
-    }
-    if (!missing(ybreaks)) {
-      p <- p  + scale_y_continuous(breaks = ybreaks)
-    }
+    if (!missing(ylim)) p <- p  + scale_y_continuous(limits = ylim)
+    if (!missing(ybreaks)) p <- p  + scale_y_continuous(breaks = ybreaks)
   }
 
-  if (!legend) {
-    p <- p + theme(legend.position = 'none')
-  }
+  if (!legend) p <- p + theme(legend.position = 'none')
 
   if (bw) {
     if (missing(secondary)) {
@@ -227,7 +215,6 @@ transPlot <- function(trans, trend = NULL, secondary = NULL, tertiary = NULL,
                                              "indianred1"))
     }
   }
-
   print(p)
   return(p)
 }

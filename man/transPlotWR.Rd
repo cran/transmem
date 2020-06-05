@@ -8,7 +8,7 @@ transPlotWR(trans, trend = NULL, secondary = NULL, tertiary = NULL,
   legend = FALSE, xlab = "Time (h)", ylab = expression(Phi),
   xlim = NULL, ylim = NULL, xbreaks = NULL, ybreaks = NULL,
   lin.secon = FALSE, sec.trend = "spline", span = 0.75,
-  explicit = FALSE, size = 3, plot = TRUE, bw = FALSE, srs = 0.8)
+  explicit = FALSE, size = 3, plot = TRUE, bw = FALSE, srs = NULL)
 }
 \arguments{
 \item{trans}{List of data frames with the complete transport
@@ -64,9 +64,7 @@ in the current graphical device.}
 the plot is given. If a black and white version is
 required, it must be set to \code{TRUE}.}
 
-\item{srs}{Relative size of the void space in shapes of the plot
-when \code{bw = TRUE}. Needs to be adjusted according to
-the graphical device resolution and desired appearance.}
+\item{srs}{Deprecated.}
 }
 \value{
 Plot of replicated transport profiles including all provided species
@@ -85,16 +83,14 @@ assigned to a variable for further modification.
 \examples{
   data(seawaterLiNaK)
   # Transport data frames and transport NLS regresions must be in lists
-  lithium <- list(seawaterLiNaK$Lithium.1, seawaterLiNaK$Lithium.2)
-  sodium <- list(seawaterLiNaK$Sodium.1, seawaterLiNaK$Sodium.2)
+  lithium   <- list(seawaterLiNaK$Lithium.1, seawaterLiNaK$Lithium.2)
+  sodium    <- list(seawaterLiNaK$Sodium.1, seawaterLiNaK$Sodium.2)
   potassium <- list(seawaterLiNaK$Potassium.1, seawaterLiNaK$Potassium.2)
-  trend <- list(transTrend(trans = seawaterLiNaK$Lithium.1),
-                transTrend(trans = seawaterLiNaK$Lithium.1))
+  trend     <- list(transTrend(trans = seawaterLiNaK$Lithium.1),
+                    transTrend(trans = seawaterLiNaK$Lithium.2))
 
   transPlotWR(trans = lithium, trend = trend, secondary = sodium,
-              tertiary = potassium, bw = TRUE, srs = 0.75)
-  transPlotWR(trans = lithium, trend = trend, secondary = sodium,
-              tertiary = potassium, bw = TRUE, srs = 0.5)
+              tertiary = potassium, bw = TRUE)
 }
 \references{
 Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis.

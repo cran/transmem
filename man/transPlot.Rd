@@ -7,7 +7,7 @@
 transPlot(trans, trend = NULL, secondary = NULL, tertiary = NULL,
   sec.trend = "spline", lin.secon = FALSE, span = 0.75, legend = FALSE,
   xlab = "Time (h)", ylab = expression(Phi), xlim = NULL, ylim = NULL,
-  xbreaks = NULL, ybreaks = NULL, size = 2.8, bw = FALSE, srs = 0.8,
+  xbreaks = NULL, ybreaks = NULL, size = 2.8, bw = FALSE, srs = NULL,
   plot = TRUE)
 }
 \arguments{
@@ -56,9 +56,7 @@ included.}
 the plot is given. If a black and white version is
 required, it must be set to \code{TRUE}.}
 
-\item{srs}{Relative size of the void space in shapes of the plot
-when \code{bw = TRUE}. Needs to be adjusted according to
-the graphical device resolution and desired appearance.}
+\item{srs}{Deprecated.}
 
 \item{plot}{Logical. If \code{TRUE}, the default, the plot is printed
 in the current graphical device.}
@@ -89,10 +87,7 @@ may be useful to illustrate repeateability. For more information see
             tertiary = seawaterLiNaK$Potassium.1)
   transPlot(trans = seawaterLiNaK$Lithium.1, trend = trend,
             secondary = seawaterLiNaK$Sodium.1,
-            tertiary = seawaterLiNaK$Potassium.1, bw = TRUE, srs = 0.75)
-  transPlot(trans = seawaterLiNaK$Lithium.1, trend = trend,
-            secondary = seawaterLiNaK$Sodium.1,
-            tertiary = seawaterLiNaK$Potassium.1, bw = TRUE, srs = 0.5)
+            tertiary = seawaterLiNaK$Potassium.1, bw = TRUE)
 }
 \references{
 Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis.
